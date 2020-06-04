@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/mock" class="x-panel-body x-form" id="iframeTarget" method="post" target="iframeTarget">
+    </form>
+
+    <button onclick="send()">Send POST targeting iframe</button>
+
+    <div class="log"></div>
+
+    <script>
+        function send () {
+            const frame = document.createElement('iframe');
+            frame.id = "iframeTarget";
+            frame.name = "iframeTarget";
+            frame.className = 'x-hidden';
+            frame.src = "javascript:false";
+
+            document.body.appendChild(frame);
+
+            // frame.addEventListener('load', function () {
+            //     console.log('frameABC', frame.contentWindow.document.body.innerHTML);
+            //     setTimeout(function () {
+            //         console.log('frame2', frame.contentWindow.document.body.innerHTML);
+            //     }, 3000);
+            // });
+
+            const log = document.querySelector('.log');
+            frame.onload = () => {
+                log.innerHTML = `${log.innerHTML}<br/>
+                iframe content: ${frame.contentWindow.document.body.innerHTML}`;
+            };
+
+            const form = document.querySelector('#iframeTarget');
+            form.submit();
+        }
+    </script>
+</body>
+</html>
